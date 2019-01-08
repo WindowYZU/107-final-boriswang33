@@ -13,6 +13,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
@@ -29,7 +31,7 @@ import javax.swing.event.InternalFrameEvent;
  */
 public class TaskFrame extends JInternalFrame {
 
-    private JTextField textTitle = null;
+    private JTextField textTitle =null;
     private JTextArea textContent = null;
     private boolean modified = false;
 
@@ -37,6 +39,12 @@ public class TaskFrame extends JInternalFrame {
         this.setSize(500, 300);
         //Q4: layout 出如圖所示的樣子，
         //記得 JTextArea 要放在捲軸裡面 (30%)
+        JFrame frame=new JFrame();
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        frame.setSize(500, 500);
+        BorderLayout layout=new BorderLayout();
+        frame.setLayout(layout);
+        
         ////////////////////////////
         this.setClosable(true);
         this.setResizable(true);
@@ -44,6 +52,7 @@ public class TaskFrame extends JInternalFrame {
 
         JPanel southPanel = new JPanel();
         this.add(southPanel, "South");
+        frame.add(southPanel,"South");
         JButton saveButton = new JButton("Save");
         southPanel.add(saveButton);
         saveButton.addActionListener(new ActionListener() {
@@ -69,7 +78,8 @@ public class TaskFrame extends JInternalFrame {
             public void internalFrameClosing(InternalFrameEvent e) {
                 if (modified) {
                     //Q5: 發現變更，顯示 confirm dialog 詢問是否要儲存 (20%)
-                    int ret = -1;
+                    //int ret = -1;
+                    int ret=JOptionPane.showConfirmDialog(textContent, "Confirm?", "test", JOptionPane.YES_NO_CANCEL_OPTION);
                     /////////////////////////////////////////////
                     if (ret == JOptionPane.YES_OPTION) {
                         TaskDB.save(getNoteTitle(), getNoteContent());
